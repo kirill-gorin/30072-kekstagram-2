@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Кирилл Горин](https://up.htmlacademy.ru/javascript-individual/2/user/30072).
-* Наставник: `Неизвестно`.
+* Наставник: [Мария Филиппова](https://htmlacademy.ru/profile/wonderjs).
 
 ---
 
