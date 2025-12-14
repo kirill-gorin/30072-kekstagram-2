@@ -1,24 +1,33 @@
-export const DESCRIPTIONS = [
-  'Описание 1',
-  'Описание 2 другое',
-  'Описание 3 еще какое-то',
-  'Описание 4 обычное',
-  'Описание 5 последнее',
-];
+import { DESCRIPTIONS, NAMES, MESSAGES, CommentId, CommentAvatar, COMMENT_MESSAGE_MIN, COMMENT_NAME_MIN, PhotoId, PhotoNumber, PHOTO_DESCRIPTION_MIN, PhotoLike, PhotoComment, PHOTO_AMOUNT } from './constants.js';
+import { getRandomInteger, getRandomElement, getUniqueId } from './utils.js';
 
-export const NAMES = [
-  'Иван',
-  'Маша',
-  'Стас',
-  'Ольга',
-  'Кекс',
-];
+export const createRandomComment = () => {
+  const usedCommentIds = [];
 
-export const MESSAGES = [
-  'Всё отлично!',
-  'В целом всё неплохо. Но не всё.',
-  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
-];
+  return {
+    id: getUniqueId(usedCommentIds, CommentId.MIN, CommentId.MAX),
+    avatar: `img/avatar-${getRandomInteger(CommentAvatar.MIN, CommentAvatar.MAX)}.svg`,
+    message: getRandomElement(COMMENT_MESSAGE_MIN, MESSAGES),
+    name: getRandomElement(COMMENT_NAME_MIN, NAMES),
+  };
+};
+
+const usedPhotoIds = [];
+
+export const createPhotoData = () => {
+  const id = getUniqueId(usedPhotoIds, PhotoId.MIN, PhotoId.MAX);
+  const url = `photos/${getRandomInteger(PhotoNumber.MIN, PhotoNumber.MAX)}.jpg`;
+  const description = getRandomElement(PHOTO_DESCRIPTION_MIN, DESCRIPTIONS);
+  const likes = getRandomInteger(PhotoLike.MIN, PhotoLike.MAX);
+  const comments = Array.from({length: getRandomInteger(PhotoComment.MIN, PhotoComment.MAX)}, createRandomComment);
+
+  return {
+    id: id,
+    url: url,
+    description: description,
+    likes: likes,
+    comments: comments,
+  };
+};
+
+export const generatePhotos = () => Array.from({length: PHOTO_AMOUNT}, createPhotoData);
