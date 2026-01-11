@@ -31,3 +31,5 @@ export const createPhotoData = () => {
 };
 
 export const generatePhotos = () => Array.from({length: PHOTO_AMOUNT}, createPhotoData);
+
+export const photos = generatePhotos();

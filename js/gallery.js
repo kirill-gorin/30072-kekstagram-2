@@ -1,6 +1,5 @@
-import { generatePhotos } from './data.js';
+import { photos } from './data.js';
 
-const photos = generatePhotos();
 
 export const createGalley = () => {
   const photoTemplate = document.querySelector('#picture').content;
@@ -11,6 +10,7 @@ export const createGalley = () => {
     const photoTemplateCloned = photoTemplate.cloneNode(true);
     photoTemplateCloned.querySelector('.picture__img').src = photo.url;
     photoTemplateCloned.querySelector('.picture__img').alt = photo.description;
+    photoTemplateCloned.querySelector('.picture__img').dataset.imageId = photo.id;
     photoTemplateCloned.querySelector('.picture__comments').textContent = photo.comments.length;
     photoTemplateCloned.querySelector('.picture__likes').textContent = photo.likes;
     photoFragment.append(photoTemplateCloned);
