@@ -1,5 +1,3 @@
-import { photos } from './data.js';
-
 const bodyElement = document.querySelector('body');
 const photoModal = document.querySelector('.big-picture');
 const photoModalImage = photoModal.querySelector('.big-picture__img img');
@@ -11,7 +9,7 @@ const photoCommentsLoader = photoModal.querySelector('.comments-loader');
 const commentsTemplate = photoModal.querySelector('.social__comments');
 const commentTemplate = photoModal.querySelector('.social__comment');
 
-const createFullPhoto = (imageId) => {
+const createFullPhoto = (imageId, photos) => {
   const currentPhoto = photos.find((photo) => photo.id === imageId);
 
   photoModalImage.src = currentPhoto.url;
@@ -21,13 +19,13 @@ const createFullPhoto = (imageId) => {
   const commentFragment = document.createDocumentFragment();
 
   currentPhoto.comments.forEach((comment) => {
-    const commentTemplateCloned = commentTemplate.cloneNode(true);
+    const newComment = commentTemplate.cloneNode(true);
 
-    commentTemplateCloned.querySelector('.social__picture').src = comment.avatar;
-    commentTemplateCloned.querySelector('.social__picture').alt = comment.name;
-    commentTemplateCloned.querySelector('.social__text').textContent = comment.message;
+    newComment.querySelector('.social__picture').src = comment.avatar;
+    newComment.querySelector('.social__picture').alt = comment.name;
+    newComment.querySelector('.social__text').textContent = comment.message;
 
-    commentFragment.append(commentTemplateCloned);
+    commentFragment.append(newComment);
   });
 
   commentsTemplate.innerHTML = '';
@@ -46,12 +44,12 @@ const closeModal = () => {
   bodyElement.classList.remove('modal-open');
 };
 
-const handleGalleryImageClick = (evt) => {
+const handleGalleryImageClick = (evt, photos) => {
   const currentElement = evt.target;
   if (currentElement.classList.contains('picture__img')) {
     evt.preventDefault();
 
-    createFullPhoto(Number(currentElement.dataset.imageId));
+    createFullPhoto(Number(currentElement.dataset.imageId), photos);
 
     openModal();
   }
@@ -69,8 +67,8 @@ const handleCloseButtonKeydown = (evt) => {
   }
 };
 
-export const managePhotoModal = () => {
-  document.addEventListener('click', handleGalleryImageClick);
+export const managePhotoModal = (photos) => {
+  document.addEventListener('click', (evt) => handleGalleryImageClick(evt, photos));
   photoModalCloseButton.addEventListener('click', handleCloseButtonClick);
   document.addEventListener('keydown', handleCloseButtonKeydown);
 };
